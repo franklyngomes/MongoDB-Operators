@@ -28,7 +28,7 @@ const RestaurantSchema = new Schema({
   cuisine: {
     type: String,
   },
-  grades: [String],
+  grades: Array,
 });
 
 const RestaurantModel = mongoose.model("restaurants", RestaurantSchema);
