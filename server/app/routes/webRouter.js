@@ -55,6 +55,10 @@ router.get('/fortySeven',upload.none(), RestaurantController.FortySeven)
 router.get('/fortyEight',upload.none(), RestaurantController.FortyEight)
 router.get('/fortyNine',upload.none(), RestaurantController.FortyNine)
 router.get('/fifty',upload.none(), RestaurantController.Fifty)
+router.get('/fiftyOne',upload.none(), RestaurantController.FiftyOne)
+router.get('/fiftyTwo',upload.none(), RestaurantController.FiftyTwo)
+router.get('/fiftyThree',upload.none(), RestaurantController.FiftyThree)
+router.get('/fiftyFour',upload.none(), RestaurantController.FiftyFour)
 
 
 module.exports = router

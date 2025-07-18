@@ -322,9 +322,19 @@ class RestaurantController {
     }
   }
   //18. Write a MongoDB query to find the restaurant Id, name, borough and cuisine for those restaurants which belong to the borough Staten Island or Queens or Bronxor Brooklyn.
-   async Eighteen(req, res) {
+  async Eighteen(req, res) {
     try {
-      const data = await RestaurantModel.find({$or: [{borough: "Staten Island"}, {borough: "Queens"}, {borough: "Bronx"}, {borough: "Brooklyn"}]}, {restaurant_id: 1, name: 1, borough: 1, cuisine: 1 });
+      const data = await RestaurantModel.find(
+        {
+          $or: [
+            { borough: "Staten Island" },
+            { borough: "Queens" },
+            { borough: "Bronx" },
+            { borough: "Brooklyn" },
+          ],
+        },
+        { restaurant_id: 1, name: 1, borough: 1, cuisine: 1 }
+      );
       return res.status(200).json({
         status: true,
         message: "Documents fetched successfully",
@@ -340,7 +350,17 @@ class RestaurantController {
   //19. Write a MongoDB query to find the restaurant Id, name, borough and cuisine for those restaurants which are not belonging to the borough Staten Island or Queens or Bronx or Brooklyn.
   async Nineteen(req, res) {
     try {
-      const data = await RestaurantModel.find({$and: [{borough: {$ne: "Staten Island"}}, {borough: {$ne: "Queens"}}, {borough: {$ne: "Bronx"}}, {borough: {$ne: "Brooklyn"}}]}, {restaurant_id: 1, name: 1, borough: 1, cuisine: 1 });
+      const data = await RestaurantModel.find(
+        {
+          $and: [
+            { borough: { $ne: "Staten Island" } },
+            { borough: { $ne: "Queens" } },
+            { borough: { $ne: "Bronx" } },
+            { borough: { $ne: "Brooklyn" } },
+          ],
+        },
+        { restaurant_id: 1, name: 1, borough: 1, cuisine: 1 }
+      );
       return res.status(200).json({
         status: true,
         message: "Documents fetched successfully",
@@ -356,7 +376,10 @@ class RestaurantController {
   //20. Write a MongoDB query to find the restaurant Id, name, borough and cuisine for those restaurants which achieved a score which is not more than 10.
   async Twenty(req, res) {
     try {
-      const data = await RestaurantModel.find({"grades.score": {$lte: 10}}, {restaurant_id: 1, name: 1, borough: 1, cuisine: 1 });
+      const data = await RestaurantModel.find(
+        { "grades.score": { $lte: 10 } },
+        { restaurant_id: 1, name: 1, borough: 1, cuisine: 1 }
+      );
       return res.status(200).json({
         status: true,
         message: "Documents fetched successfully",
@@ -372,7 +395,20 @@ class RestaurantController {
   //21. Write a MongoDB query to find the restaurant Id, name, borough and cuisine for those restaurants which prepared dish except 'American' and 'Chinees' or restaurant's name begins with letter 'Wil'.
   async TwentyOne(req, res) {
     try {
-      const data = await RestaurantModel.find({$or: [{$and: [{cuisine: {$ne: "American "}}, {cuisine: {$ne: "Chinese"}}]}, {name: {$regex: /^Wil/}}]}, {restaurant_id: 1, name: 1, borough: 1, cuisine: 1 });
+      const data = await RestaurantModel.find(
+        {
+          $or: [
+            {
+              $and: [
+                { cuisine: { $ne: "American " } },
+                { cuisine: { $ne: "Chinese" } },
+              ],
+            },
+            { name: { $regex: /^Wil/ } },
+          ],
+        },
+        { restaurant_id: 1, name: 1, borough: 1, cuisine: 1 }
+      );
       return res.status(200).json({
         status: true,
         message: "Documents fetched successfully",
@@ -388,7 +424,18 @@ class RestaurantController {
   //22. Write a MongoDB query to find the restaurant Id, name, and grades for those restaurants which achieved a grade of "A" and scored 11 on an ISODate "2014-08-11T00:00:00Z" among many of survey dates..
   async TwentyTwo(req, res) {
     try {
-      const data = await RestaurantModel.find({grades: {$elemMatch: {date: new Date("2014-08-11T00:00:00Z"), grade: "A", score: 11}}}, {restaurant_id: 1, name: 1, grades: 1 });
+      const data = await RestaurantModel.find(
+        {
+          grades: {
+            $elemMatch: {
+              date: new Date("2014-08-11T00:00:00Z"),
+              grade: "A",
+              score: 11,
+            },
+          },
+        },
+        { restaurant_id: 1, name: 1, grades: 1 }
+      );
       return res.status(200).json({
         status: true,
         message: "Documents fetched successfully",
@@ -404,7 +451,14 @@ class RestaurantController {
   //23. Write a MongoDB query to find the restaurant Id, name and grades for those restaurants where the 2nd element of grades array contains a grade of "A" and score 9 on an ISODate "2014-08-11T00:00:00Z".
   async TwentyThree(req, res) {
     try {
-      const data = await RestaurantModel.find({"grades.1.date": new Date("2014-08-11T00:00:00Z"), "grades.1.grade": "A", "grades.1.score": 9}, {restaurant_id: 1, name: 1, grades: 1 });
+      const data = await RestaurantModel.find(
+        {
+          "grades.1.date": new Date("2014-08-11T00:00:00Z"),
+          "grades.1.grade": "A",
+          "grades.1.score": 9,
+        },
+        { restaurant_id: 1, name: 1, grades: 1 }
+      );
       return res.status(200).json({
         status: true,
         message: "Documents fetched successfully",
@@ -420,7 +474,15 @@ class RestaurantController {
   //24. Write a MongoDB query to find the restaurant Id, name, address and geographical location for those restaurants where 2nd element of coord array contains a value which is more than 42 and upto 52.
   async TwentyFour(req, res) {
     try {
-      const data = await RestaurantModel.find({$and: [{"address.coord.1": {$gt: 42}}, {"address.coord.1":{$lte: 52}}]},{restaurant_id: 1, name: 1, address: 1 });
+      const data = await RestaurantModel.find(
+        {
+          $and: [
+            { "address.coord.1": { $gt: 42 } },
+            { "address.coord.1": { $lte: 52 } },
+          ],
+        },
+        { restaurant_id: 1, name: 1, address: 1 }
+      );
       return res.status(200).json({
         status: true,
         message: "Documents fetched successfully",
@@ -436,7 +498,7 @@ class RestaurantController {
   //25. Write a MongoDB query to arrange the name of the restaurants in ascending order along with all the columns.
   async TwentyFive(req, res) {
     try {
-      const data = await RestaurantModel.find().sort({name: 1});
+      const data = await RestaurantModel.find().sort({ name: 1 });
       return res.status(200).json({
         status: true,
         message: "Documents fetched successfully",
@@ -452,7 +514,7 @@ class RestaurantController {
   //26. Write a MongoDB query to arrange the name of the restaurants in descending along with all the columns
   async TwentySix(req, res) {
     try {
-      const data = await RestaurantModel.find().sort({name: -1});
+      const data = await RestaurantModel.find().sort({ name: -1 });
       return res.status(200).json({
         status: true,
         message: "Documents fetched successfully",
@@ -468,7 +530,10 @@ class RestaurantController {
   //27. Write a MongoDB query to arranged the name of the cuisine in ascending order and for that same cuisine borough should be in descending order.
   async TwentySeven(req, res) {
     try {
-      const data = await RestaurantModel.find().sort({"cuisine": 1, "borough": -1});
+      const data = await RestaurantModel.find().sort({
+        cuisine: 1,
+        borough: -1,
+      });
       return res.status(200).json({
         status: true,
         message: "Documents fetched successfully",
@@ -484,7 +549,9 @@ class RestaurantController {
   //28. Write a MongoDB query to know whether all the addresses contains the street or not.
   async TwentyEight(req, res) {
     try {
-      const data = await RestaurantModel.find({address: {$exists: "street"}});
+      const data = await RestaurantModel.find({
+        address: { $exists: "street" },
+      });
       return res.status(200).json({
         status: true,
         message: "Documents fetched successfully",
@@ -500,7 +567,9 @@ class RestaurantController {
   //29. Write a MongoDB query which will select all documents in the restaurants collection where the coord field value is Double.
   async TwentyNine(req, res) {
     try {
-      const data = await RestaurantModel.find({"address.coord": {$type: 1}});
+      const data = await RestaurantModel.find({
+        "address.coord": { $type: 1 },
+      });
       return res.status(200).json({
         status: true,
         message: "Documents fetched successfully",
@@ -514,9 +583,12 @@ class RestaurantController {
     }
   }
   //30. Write a MongoDB query which will select the restaurant Id, name and grades for those restaurants which returns 0 as a remainder after dividing the score by 7.
-   async Thirty(req, res) {
+  async Thirty(req, res) {
     try {
-      const data = await RestaurantModel.find({"grades.score": {$mod: [7,0]}}, {restaurant_id: 1, name: 1, grades: 1});
+      const data = await RestaurantModel.find(
+        { "grades.score": { $mod: [7, 0] } },
+        { restaurant_id: 1, name: 1, grades: 1 }
+      );
       return res.status(200).json({
         status: true,
         message: "Documents fetched successfully",
@@ -532,7 +604,10 @@ class RestaurantController {
   //31. Write a MongoDB query to find the restaurant name, borough, longitude and attitude and cuisine for those restaurants which contains 'mon' as three letters somewhere in its name.
   async ThirtyOne(req, res) {
     try {
-      const data = await RestaurantModel.find({name: {$regex: /mon/}}, {restaurant_id: 1, name: 1, "address.coord": 1, borough: 1});
+      const data = await RestaurantModel.find(
+        { name: { $regex: /mon/ } },
+        { restaurant_id: 1, name: 1, "address.coord": 1, borough: 1 }
+      );
       return res.status(200).json({
         status: true,
         message: "Documents fetched successfully",
@@ -546,9 +621,12 @@ class RestaurantController {
     }
   }
   //32. Write a MongoDB query to find the restaurant name, borough, longitude and latitude and cuisine for those restaurants which contain 'Mad' as first three letters of its name.
-   async ThirtyTwo(req, res) {
+  async ThirtyTwo(req, res) {
     try {
-      const data = await RestaurantModel.find({name: {$regex: /^Mad/}}, {restaurant_id: 1, name: 1, "address.coord": 1, borough: 1});
+      const data = await RestaurantModel.find(
+        { name: { $regex: /^Mad/ } },
+        { restaurant_id: 1, name: 1, "address.coord": 1, borough: 1 }
+      );
       return res.status(200).json({
         status: true,
         message: "Documents fetched successfully",
@@ -564,7 +642,7 @@ class RestaurantController {
   //33. Write a MongoDB query to find the restaurants that have at least one grade with a score of less than 5.
   async ThirtyThree(req, res) {
     try {
-      const data = await RestaurantModel.find({"grades.score": {$lt: 5}});
+      const data = await RestaurantModel.find({ "grades.score": { $lt: 5 } });
       return res.status(200).json({
         status: true,
         message: "Documents fetched successfully",
@@ -580,7 +658,9 @@ class RestaurantController {
   //34. Write a MongoDB query to find the restaurants that have at least one grade with a score of less than 5 and that are located in the borough of Manhattan.
   async ThirtyFour(req, res) {
     try {
-      const data = await RestaurantModel.find({$and: [{"grades.score": {$lt: 5}}, {borough: "Manhattan"}]});
+      const data = await RestaurantModel.find({
+        $and: [{ "grades.score": { $lt: 5 } }, { borough: "Manhattan" }],
+      });
       return res.status(200).json({
         status: true,
         message: "Documents fetched successfully",
@@ -596,7 +676,12 @@ class RestaurantController {
   //35. Write a MongoDB query to find the restaurants that have at least one grade with a score of less than 5 and that are located in the borough of Manhattan or Brooklyn.
   async ThirtyFive(req, res) {
     try {
-      const data = await RestaurantModel.find({$and: [{"grades.score": {$lt: 5}}, {$or: [{borough: "Manhattan"}, {borough: "Brooklyn"}]}]});
+      const data = await RestaurantModel.find({
+        $and: [
+          { "grades.score": { $lt: 5 } },
+          { $or: [{ borough: "Manhattan" }, { borough: "Brooklyn" }] },
+        ],
+      });
       return res.status(200).json({
         status: true,
         message: "Documents fetched successfully",
@@ -612,7 +697,13 @@ class RestaurantController {
   //36. Write a MongoDB query to find the restaurants that have at least one grade with a score of less than 5 and that are located in the borough of Manhattan or Brooklyn, and their cuisine is not American.
   async ThirtySix(req, res) {
     try {
-      const data = await RestaurantModel.find({$and: [{"grades.score": {$lt: 5}}, {$or: [{borough: "Manhattan"}, {borough: "Brooklyn"}]}, {cuisine: {$ne: "American "}}]});
+      const data = await RestaurantModel.find({
+        $and: [
+          { "grades.score": { $lt: 5 } },
+          { $or: [{ borough: "Manhattan" }, { borough: "Brooklyn" }] },
+          { cuisine: { $ne: "American " } },
+        ],
+      });
       return res.status(200).json({
         status: true,
         message: "Documents fetched successfully",
@@ -628,7 +719,18 @@ class RestaurantController {
   //37. Write a MongoDB query to find the restaurants that have at least one grade with a score of less than 5 and that are located in the borough of Manhattan or Brooklyn, and their cuisine is not American or Chinese.
   async ThirtySeven(req, res) {
     try {
-      const data = await RestaurantModel.find({$and: [{"grades.score": {$lt: 5}}, {$or: [{borough: "Manhattan"}, {borough: "Brooklyn"}]}, {$and: [{cuisine: {$ne: "American "}}, {cuisine: {$ne: "Chinese"}}]}]});
+      const data = await RestaurantModel.find({
+        $and: [
+          { "grades.score": { $lt: 5 } },
+          { $or: [{ borough: "Manhattan" }, { borough: "Brooklyn" }] },
+          {
+            $and: [
+              { cuisine: { $ne: "American " } },
+              { cuisine: { $ne: "Chinese" } },
+            ],
+          },
+        ],
+      });
       return res.status(200).json({
         status: true,
         message: "Documents fetched successfully",
@@ -642,9 +744,11 @@ class RestaurantController {
     }
   }
   // /38. Write a MongoDB query to find the restaurants that have a grade with a score of 2 and a grade with a score of 6.
-   async ThirtyEight(req, res) {
+  async ThirtyEight(req, res) {
     try {
-      const data = await RestaurantModel.find({$and: [{"grades.score" : {$eq: 2}}, {"grades.score" : {$eq: 6}}]});
+      const data = await RestaurantModel.find({
+        $and: [{ "grades.score": { $eq: 2 } }, { "grades.score": { $eq: 6 } }],
+      });
       return res.status(200).json({
         status: true,
         message: "Documents fetched successfully",
@@ -660,7 +764,13 @@ class RestaurantController {
   //39. Write a MongoDB query to find the restaurants that have a grade with a score of 2 and a grade with a score of 6 and are located in the borough of Manhattan.
   async ThirtyNine(req, res) {
     try {
-      const data = await RestaurantModel.find({$and: [{"grades.score" : {$eq: 2}}, {"grades.score" : {$eq: 6}},{borough: "Manhattan"}]});
+      const data = await RestaurantModel.find({
+        $and: [
+          { "grades.score": { $eq: 2 } },
+          { "grades.score": { $eq: 6 } },
+          { borough: "Manhattan" },
+        ],
+      });
       return res.status(200).json({
         status: true,
         message: "Documents fetched successfully",
@@ -676,7 +786,13 @@ class RestaurantController {
   //40. Write a MongoDB query to find the restaurants that have a grade with a score of 2 and a grade with a score of 6 and are located in the borough of Manhattan or Brooklyn.
   async Forty(req, res) {
     try {
-      const data = await RestaurantModel.find({$and: [{"grades.score" : {$eq: 2}}, {"grades.score" : {$eq: 6}},{$or: [{borough: "Manhattan"},{borough: "Brooklyn"}]}]});
+      const data = await RestaurantModel.find({
+        $and: [
+          { "grades.score": { $eq: 2 } },
+          { "grades.score": { $eq: 6 } },
+          { $or: [{ borough: "Manhattan" }, { borough: "Brooklyn" }] },
+        ],
+      });
       return res.status(200).json({
         status: true,
         message: "Documents fetched successfully",
@@ -690,9 +806,16 @@ class RestaurantController {
     }
   }
   //41. Write a MongoDB query to find the restaurants that have a grade with a score of 2 and a grade with a score of 6 and are located in the borough of Manhattan or Brooklyn, and their cuisine is not American.
-   async FortyOne(req, res) {
+  async FortyOne(req, res) {
     try {
-      const data = await RestaurantModel.find({$and: [{grades: {$elemMatch: {score: 2}}}, {grades: {$elemMatch: {score: 6}}},{borough: {$in: ["Brooklyn", "Manhattan"]}},{cuisine: {$nin: ["American "]}}]});
+      const data = await RestaurantModel.find({
+        $and: [
+          { grades: { $elemMatch: { score: 2 } } },
+          { grades: { $elemMatch: { score: 6 } } },
+          { borough: { $in: ["Brooklyn", "Manhattan"] } },
+          { cuisine: { $nin: ["American "] } },
+        ],
+      });
       return res.status(200).json({
         status: true,
         message: "Documents fetched successfully",
@@ -708,7 +831,14 @@ class RestaurantController {
   //42. Write a MongoDB query to find the restaurants that have a grade with a score of 2 and a grade with a score of 6 and are located in the borough of Manhattan or Brooklyn, and their cuisine is not American or Chinese.
   async FortyTwo(req, res) {
     try {
-      const data = await RestaurantModel.find({$and: [{grades: {$elemMatch: {score: 2}}}, {grades: {$elemMatch: {score: 6}}},{borough: {$in: ["Brooklyn", "Manhattan"]}},{cuisine: {$nin: ["American ", "Chinese"]}}]});
+      const data = await RestaurantModel.find({
+        $and: [
+          { grades: { $elemMatch: { score: 2 } } },
+          { grades: { $elemMatch: { score: 6 } } },
+          { borough: { $in: ["Brooklyn", "Manhattan"] } },
+          { cuisine: { $nin: ["American ", "Chinese"] } },
+        ],
+      });
       return res.status(200).json({
         status: true,
         message: "Documents fetched successfully",
@@ -722,9 +852,14 @@ class RestaurantController {
     }
   }
   //43. Write a MongoDB query to find the restaurants that have a grade with a score of 2 or a grade with a score of 6.
-   async FortyThree(req, res) {
+  async FortyThree(req, res) {
     try {
-      const data = await RestaurantModel.find({$and: [{grades: {$elemMatch: {score: 2}}}, {grades: {$elemMatch: {score: 6}}}]});
+      const data = await RestaurantModel.find({
+        $and: [
+          { grades: { $elemMatch: { score: 2 } } },
+          { grades: { $elemMatch: { score: 6 } } },
+        ],
+      });
       return res.status(200).json({
         status: true,
         message: "Documents fetched successfully",
@@ -738,9 +873,15 @@ class RestaurantController {
     }
   }
   //44. Write a MongoDB query to find the restaurants that have a grade with a score of 2 or a grade with a score of 6 and are located in the borough of Manhattan.
-   async FortyFour(req, res) {
+  async FortyFour(req, res) {
     try {
-      const data = await RestaurantModel.find({$and: [{grades: {$elemMatch: {score: 2}}}, {grades: {$elemMatch: {score: 6}}}, {borough: {$in: ["Manhattan"]}}]});
+      const data = await RestaurantModel.find({
+        $and: [
+          { grades: { $elemMatch: { score: 2 } } },
+          { grades: { $elemMatch: { score: 6 } } },
+          { borough: { $in: ["Manhattan"] } },
+        ],
+      });
       return res.status(200).json({
         status: true,
         message: "Documents fetched successfully",
@@ -756,7 +897,13 @@ class RestaurantController {
   //45. Write a MongoDB query to find the restaurants that have a grade with a score of 2 or a grade with a score of 6 and are located in the borough of Manhattan or Brooklyn.
   async FortyFive(req, res) {
     try {
-      const data = await RestaurantModel.find({$and: [{grades: {$elemMatch: {score: 2}}}, {grades: {$elemMatch: {score: 6}}}, {borough: {$in: ["Manhattan", "Brooklyn"]}}]});
+      const data = await RestaurantModel.find({
+        $and: [
+          { grades: { $elemMatch: { score: 2 } } },
+          { grades: { $elemMatch: { score: 6 } } },
+          { borough: { $in: ["Manhattan", "Brooklyn"] } },
+        ],
+      });
       return res.status(200).json({
         status: true,
         message: "Documents fetched successfully",
@@ -770,9 +917,16 @@ class RestaurantController {
     }
   }
   //46. Write a MongoDB query to find the restaurants that have a grade with a score of 2 or a grade with a score of 6 and are located in the borough of Manhattan or Brooklyn, and their cuisine is not American.
-   async FortySix(req, res) {
+  async FortySix(req, res) {
     try {
-      const data = await RestaurantModel.find({$and: [{grades: {$elemMatch: {score: 2}}}, {grades: {$elemMatch: {score: 6}}}, {borough: {$in: ["Manhattan", "Brooklyn"]}}, {cuisine: {$nin: ["American "]}}]});
+      const data = await RestaurantModel.find({
+        $and: [
+          { grades: { $elemMatch: { score: 2 } } },
+          { grades: { $elemMatch: { score: 6 } } },
+          { borough: { $in: ["Manhattan", "Brooklyn"] } },
+          { cuisine: { $nin: ["American "] } },
+        ],
+      });
       return res.status(200).json({
         status: true,
         message: "Documents fetched successfully",
@@ -788,7 +942,14 @@ class RestaurantController {
   //47. Write a MongoDB query to find the restaurants that have a grade with a score of 2 or a grade with a score of 6 and are located in the borough of Manhattan or Brooklyn, and their cuisine is not American or Chinese.
   async FortySeven(req, res) {
     try {
-      const data = await RestaurantModel.find({$and: [{grades: {$elemMatch: {score: 2}}}, {grades: {$elemMatch: {score: 6}}}, {borough: {$in: ["Manhattan", "Brooklyn"]}}, {cuisine: {$nin: ["American ", "Chinese"]}}]});
+      const data = await RestaurantModel.find({
+        $and: [
+          { grades: { $elemMatch: { score: 2 } } },
+          { grades: { $elemMatch: { score: 6 } } },
+          { borough: { $in: ["Manhattan", "Brooklyn"] } },
+          { cuisine: { $nin: ["American ", "Chinese"] } },
+        ],
+      });
       return res.status(200).json({
         status: true,
         message: "Documents fetched successfully",
@@ -802,9 +963,11 @@ class RestaurantController {
     }
   }
   //48. Write a MongoDB query to find the restaurants that have all grades with a score greater than 5.
-   async FortyEight(req, res) {
+  async FortyEight(req, res) {
     try {
-      const data = await RestaurantModel.find({$and: [{grades: {$elemMatch: {score: {$gt: 5}}}}]});
+      const data = await RestaurantModel.find({
+        $and: [{ grades: { $elemMatch: { score: { $gt: 5 } } } }],
+      });
       return res.status(200).json({
         status: true,
         message: "Documents fetched successfully",
@@ -820,7 +983,12 @@ class RestaurantController {
   //49. Write a MongoDB query to find the restaurants that have all grades with a score greater than 5 and are located in the borough of Manhattan.
   async FortyNine(req, res) {
     try {
-      const data = await RestaurantModel.find({$and: [{grades: {$elemMatch: {score: {$gt: 5}}}}, {borough: {$in: ["Manhattan"]}}]});
+      const data = await RestaurantModel.find({
+        $and: [
+          { grades: { $elemMatch: { score: { $gt: 5 } } } },
+          { borough: { $in: ["Manhattan"] } },
+        ],
+      });
       return res.status(200).json({
         status: true,
         message: "Documents fetched successfully",
@@ -836,7 +1004,12 @@ class RestaurantController {
   //50. Write a MongoDB query to find the restaurants that have all grades with a score greater than 5 and are located in the borough of Manhattan or Brooklyn.
   async Fifty(req, res) {
     try {
-      const data = await RestaurantModel.find({$and: [{grades: {$elemMatch: {score: {$gt: 5}}}}, {borough: {$in: ["Manhattan", "Brooklyn"]}}]});
+      const data = await RestaurantModel.find({
+        $and: [
+          { grades: { $elemMatch: { score: { $gt: 5 } } } },
+          { borough: { $in: ["Manhattan", "Brooklyn"] } },
+        ],
+      });
       return res.status(200).json({
         status: true,
         message: "Documents fetched successfully",
@@ -850,6 +1023,99 @@ class RestaurantController {
     }
   }
   //51. Write a MongoDB query to find the average score for each restaurant.
-  
+  async FiftyOne(req, res) {
+    try {
+      const data = await RestaurantModel.aggregate([
+        { $unwind: "$grades" },
+        {
+          $group: {
+            _id: "$name",
+            average: { $avg: "$grades.score" },
+          },
+        },
+      ]);
+      return res.status(200).json({
+        status: true,
+        message: "Documents fetched successfully",
+        data: data,
+      });
+    } catch (error) {
+      return res.status(400).json({
+        status: false,
+        message: error.message,
+      });
+    }
+  }
+  // /52. Write a MongoDB query to find the highest score for each restaurant.
+  async FiftyTwo(req, res) {
+    try {
+      const data = await RestaurantModel.aggregate([
+        { $unwind: "$grades" },
+        {
+          $group: {
+            _id: "$name",
+            maxScore: { $max: "$grades.score" },
+          },
+        },
+      ]);
+      return res.status(200).json({
+        status: true,
+        message: "Documents fetched successfully",
+        data: data,
+      });
+    } catch (error) {
+      return res.status(400).json({
+        status: false,
+        message: error.message,
+      });
+    }
+  }
+  // /53. Write a MongoDB query to find the lowest score for each restaurant.
+  async FiftyThree(req, res) {
+    try {
+      const data = await RestaurantModel.aggregate([
+        { $unwind: "$grades" },
+        {
+          $group: {
+            _id: "$name",
+            lowestScore: { $min: "$grades.score" },
+          },
+        },
+      ]);
+      return res.status(200).json({
+        status: true,
+        message: "Documents fetched successfully",
+        data: data,
+      });
+    } catch (error) {
+      return res.status(400).json({
+        status: false,
+        message: error.message,
+      });
+    }
+  }
+  //54. Write a MongoDB query to find the count of restaurants in each borough.
+  async FiftyFour(req, res) {
+    try {
+      const data = await RestaurantModel.aggregate([
+        {
+          $group: {
+            _id: "$borough",
+            restaurants: { $sum: 1},
+          },
+        }
+      ]);
+      return res.status(200).json({
+        status: true,
+        message: "Documents fetched successfully",
+        data: data,
+      });
+    } catch (error) {
+      return res.status(400).json({
+        status: false,
+        message: error.message,
+      });
+    }
+  }
 }
 module.exports = new RestaurantController();
